@@ -1,25 +1,25 @@
 
 resource "aws_iam_user" "user_1" {
-  name = "dt_Vijay"
+  name = "DT_Vijay"
   path = "/"
  
   tags = {
-    tag-key = "dt_Vijay-tagname"
+    tag-key = "DT_Vijay-tagname"
   }
 }
 
 resource "aws_iam_user" "user_2" {
-  name = "dt_Vishal"
+  name = "DT_Vishal"
   path = "/system/"
  
   tags = {
-    tag-key = "dt_Vishal-tagname"
+    tag-key = "DT_Vishal-tagname"
   }
 }
 
 
 resource "aws_iam_policy" "policy" {
-  name        = "Demo-policy"
+  name        = "DT_S3_Full_Access"
   #description = "A Demo policy"
   policy      = jsonencode(
     {
