@@ -8,15 +8,7 @@ terraform{
 }
 
 provider "aws" {
-  region  = "us-east-1"
+    region  = "us-east-1"
+    #access_key = "AWS_ACCESS_KEY_ID"         ## access_key call from terraform
+    #secret_key = "AWS_SECRET_ACCESS_KEY"     ## secret_key call from terraform
   }
-
-    ## To create EC2 instace
-#resource "aws_instance" "example_server" {
-#  ami           = "ami-0d188df7cedce7d90"
-#  instance_type = "t2.micro"
-
- # tags = {
- #   Name = "EC2DT1Web01"
- # }
-#}
