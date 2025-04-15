@@ -73,7 +73,8 @@ resource "aws_iam_policy" "p_user" {
 
 resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
     user = aws_iam_user.user_deepali.name
-    policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess" #arn:aws:iam::aws:policy/AmazonEC2FullAccess
+    policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess" #arn:aws:iam::aws:policy/AmazonEC2FullAccess 
+    #arn:aws:iam::aws:policy/AIOpsOperatorAccess
 }
 
 resource "aws_iam_group_policy_attachment" "gpa_developer" {
@@ -84,4 +85,9 @@ resource "aws_iam_group_policy_attachment" "gpa_developer" {
 resource "aws_iam_group_policy_attachment" "gpa_users" {
   group      = aws_iam_group.gp_users.name
   policy_arn = aws_iam_policy.p_user.name
+}
+
+resource "aws_iam_group_policy_attachment" "gpa_users1" {
+  group      = aws_iam_group.gp_users.name
+  policy_arn = "arn:aws:iam::aws:policy/AIOpsOperatorAccess"
 }
