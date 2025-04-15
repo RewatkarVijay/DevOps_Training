@@ -79,12 +79,12 @@ resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
 
 resource "aws_iam_group_policy_attachment" "gpa_developer" {
   group      = aws_iam_group.gp_developers.name
-  policy_arn = aws_iam_policy.p_developer.name
+  policy_arn = aws_iam_policy.p_developer.arn
 }
 
 resource "aws_iam_group_policy_attachment" "gpa_users" {
   group      = aws_iam_group.gp_users.name
-  policy_arn = aws_iam_policy.p_user.name
+  policy_arn = aws_iam_policy.p_user.arn
 }
 
 resource "aws_iam_group_policy_attachment" "gpa_users1" {
