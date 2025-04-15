@@ -91,3 +91,23 @@ resource "aws_iam_group_policy_attachment" "gpa_users1" {
   group      = aws_iam_group.gp_users.name
   policy_arn = "arn:aws:iam::aws:policy/AIOpsOperatorAccess"
 }
+
+resource "aws_iam_group_policy" "my_developer_policy111" {
+  name  = "my_developer_policy111"
+  group = aws_iam_group.gp_developers.name
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
