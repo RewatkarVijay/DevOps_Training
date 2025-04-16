@@ -21,15 +21,15 @@ resource "aws_subnet" "test_public_subnet" {
   cidr_block = "10.0.2.0/24"
 
   tags = {
-    Name = "test_subnet"
+    Name = "test_public_subnet"
   }
 }
 
 resource "aws_subnet" "test_private_subnet" {
   vpc_id     = aws_vpc.test_vpc.id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = "10.0.3.0/24"
 
   tags = {
-    Name = "test_subnet"
+    Name = "test_private_subnet"
   }
 }
