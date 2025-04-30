@@ -195,8 +195,8 @@ resource "aws_lb" "test" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_all.id]
-  #subnets            = [for subnet in aws_subnet.public : subnet.id]
-subnets            = [aws_subnet.DevSubnetPublic.id]
+  #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
+subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.id]
   #enable_deletion_protection = true
 
 #   access_logs {
