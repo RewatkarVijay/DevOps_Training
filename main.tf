@@ -90,7 +90,7 @@ resource "aws_instance" "ec2Test" {
 
   instance_type = "t2.micro"
 
-  key_name      = "NewVPC"  
+  key_name      = "EC2PRODKeyPair"  
 
   subnet_id     = aws_subnet.TestSubnetPrivate.id
 
@@ -110,7 +110,7 @@ resource "aws_instance" "ec2Dev" {
 
   instance_type = "t2.micro"
 
-  key_name      = "NewVPC"  
+  key_name      = "EC2PRODKeyPair"  
 
   subnet_id     = aws_subnet.DevSubnetPrivate.id
 
