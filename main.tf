@@ -56,7 +56,7 @@ resource "aws_subnet" "DevSubnetPublic" {
 
   cidr_block = "10.0.4.0/24"
 
-  availability_zone = "us-east-1b"
+  availability_zone = ["us-east-1b","us-east-1z"]
 
   tags = {
 
@@ -196,7 +196,8 @@ resource "aws_lb" "test" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_all.id]
   #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
-subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.id]
+  subnets            = [for subnet in aws_subnet.public : subnet.id]
+#subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.id]
   #enable_deletion_protection = true
 
 #   access_logs {
