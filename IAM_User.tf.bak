@@ -1,19 +1,19 @@
 
-resource "aws_iam_user" "user_vijay" {
-  name = "DT_Vijay"
+resource "aws_iam_user" "vijay-d" {
+  name = "Vijay-D"
   path = "/"
  
   tags = {
-    tag-key = "DT_Vijay-tagname"
+    tag-key = "Vijay-D-tagname"
   }
 }
 
-resource "aws_iam_user" "user_deepali" {
-  name = "DT_Vishal"
+resource "aws_iam_user" "vishal-d" {
+  name = "Vishal-D"
   path = "/system/"
  
   tags = {
-    tag-key = "DT_Vishal-tagname"
+    tag-key = "Vishal-D-tagname"
   }
 }
 
