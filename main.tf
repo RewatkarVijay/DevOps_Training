@@ -171,7 +171,6 @@ resource "aws_vpc_security_group_ingress_rule" "allows_RDP" {
   ip_protocol       = "tcp"
 
   to_port           = 3389
-
 }
  
 resource "aws_security_group" "allow_all" {
@@ -179,7 +178,6 @@ resource "aws_security_group" "allow_all" {
   name        = "allow_all"
 
   description = "Allow TLS inbound traffic and all outbound traffic"
-
   vpc_id      = aws_vpc.main.id
  
   tags = {
@@ -188,4 +186,26 @@ resource "aws_security_group" "allow_all" {
 
   }
 
+}
+
+
+## Application Load Balancer
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_all.id]
+  #subnets            = [for subnet in aws_subnet.public : subnet.id]
+subnets            = [aws_subnet.DevSubnetPublic.id]
+  #enable_deletion_protection = true
+
+#   access_logs {
+#     bucket  = aws_s3_bucket.lb_logs.id
+#     prefix  = "test-lb"
+#     enabled = true
+#   }
+
+  tags = {
+    Environment = "training"
+  }
 }
