@@ -209,3 +209,12 @@ subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.
     Environment = "training"
   }
 }
+
+
+resource "aws_internet_gateway" "igw_test1" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "tf-igw"
+  }
+}
