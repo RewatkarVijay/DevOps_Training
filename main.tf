@@ -92,7 +92,7 @@ resource "aws_instance" "ec2Test" {
 
   key_name      = "EC2PRODKeyPair"  
 
-  subnet_id     = aws_subnet.TestSubnetPublic.id
+  subnet_id     = aws_subnet.TestSubnetPrivate.id
 
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
@@ -112,7 +112,7 @@ resource "aws_instance" "ec2Dev" {
 
   key_name      = "EC2PRODKeyPair"  
 
-  subnet_id     = aws_subnet.DevSubnetPublic.id
+  subnet_id     = aws_subnet.DevSubnetPrivate.id
 
   vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
 
@@ -226,7 +226,7 @@ resource "aws_lb_target_group" "alb-example" {
   name        = "tf-example-lb-alb-tg"
   target_type = "alb"
   port        = 80
-  protocol    = "TCP"
+  protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
 }
 
