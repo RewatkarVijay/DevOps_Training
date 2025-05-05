@@ -229,3 +229,15 @@ resource "aws_lb_target_group" "alb-example" {
   protocol    = "TCP"
   vpc_id      = aws_vpc.main.id
 }
+
+resource "aws_lb_target_group_attachment" "test1" {
+  target_group_arn = aws_lb_target_group.test.arn
+  target_id        = aws_instance.ec2Dev.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "test2" {
+  target_group_arn = aws_lb_target_group.test.arn
+  target_id        = aws_instance.ec2Test.id
+  port             = 80
+}
