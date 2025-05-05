@@ -92,7 +92,7 @@ resource "aws_instance" "ec2Test" {
 
   key_name      = "EC2PRODKeyPair"  
 
-  subnet_id     = aws_subnet.TestSubnetPrivate.id
+  subnet_id     = aws_subnet.TestSubnetPublic.id
 
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
@@ -112,7 +112,7 @@ resource "aws_instance" "ec2Dev" {
 
   key_name      = "EC2PRODKeyPair"  
 
-  subnet_id     = aws_subnet.DevSubnetPrivate.id
+  subnet_id     = aws_subnet.DevSubnetPublic.id
 
   vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
 
