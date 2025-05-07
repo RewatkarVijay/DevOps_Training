@@ -72,7 +72,7 @@ resource "aws_iam_policy" "p_user" {
 # }
 
 resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
-    user = aws_iam_user.user_deepali.name
+    user = aws_iam_user.vishal-t.name
     policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess" #arn:aws:iam::aws:policy/AmazonEC2FullAccess 
     #arn:aws:iam::aws:policy/AIOpsOperatorAccess
 }
