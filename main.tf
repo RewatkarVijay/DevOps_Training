@@ -1,6 +1,7 @@
 resource "aws_eip" "nat_eip" {
-  instance = aws_instance.web-01.id
+  #instance = aws_instance.web-01.id
   #domain   = "vpc"
+  network_border_group = "us-east-1"
 }
  
 # Create the NAT Gateway
