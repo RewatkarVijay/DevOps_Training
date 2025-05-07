@@ -1,2 +1,274 @@
 ## Main.tf
 
+
+## Main.tf
+
+#creating AWS VPC
+
+resource "aws_vpc" "main" {
+
+  cidr_block       = "10.0.0.0/16"
+
+  instance_tenancy = "default"
+ 
+tags = {
+
+  Name = "testVPC"
+
+  }
+
+}
+ 
+#creating subnet
+
+resource "aws_subnet" "TestSubnetPublic" {
+
+  vpc_id     = aws_vpc.main.id
+
+  cidr_block = "10.0.2.0/24"
+
+  availability_zone = "us-east-1a"
+
+  tags = {
+
+    Name = "TestSubnetPublic"
+
+  }
+
+}
+ 
+resource "aws_subnet" "TestSubnetPrivate" {
+
+  vpc_id     = aws_vpc.main.id
+
+  cidr_block = "10.0.3.0/24"
+
+  availability_zone = "us-east-1a"
+
+  tags = {
+
+    Name = "TestSubnetPrivate"
+
+  }
+
+}
+ 
+resource "aws_subnet" "DevSubnetPublic" {
+
+  vpc_id     = aws_vpc.main.id
+
+  cidr_block = "10.0.4.0/24"
+
+  availability_zone = "us-east-1b"
+
+  tags = {
+
+    Name = "DevSubnetPublic"
+
+  }
+
+}
+ 
+resource "aws_subnet" "DevSubnetPrivate" {
+
+  vpc_id     = aws_vpc.main.id
+
+  cidr_block = "10.0.5.0/24"
+
+  availability_zone = "us-east-1b"
+
+  tags = {
+
+    Name = "DevSubnetPrivate"
+
+  }
+
+}
+ 
+#Creating EC2 instance in subnet
+
+resource "aws_instance" "ec2Test" {
+
+  ami           = "ami-05f08ad7b78afd8cd" 
+
+  instance_type = "t2.micro"
+
+  key_name      = "EC2PRODKeyPair"  
+
+  subnet_id     = aws_subnet.TestSubnetPrivate.id
+
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+
+  tags = {
+
+    Name = "ec2Test"
+
+  }
+
+}
+ 
+resource "aws_instance" "ec2Dev" {
+
+  ami           = "ami-05f08ad7b78afd8cd" 
+
+  instance_type = "t2.micro"
+
+  key_name      = "EC2PRODKeyPair"  
+
+  subnet_id     = aws_subnet.DevSubnetPrivate.id
+
+  vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
+
+    tags = {
+
+    Name = "ec2Dev"
+
+  }
+
+}
+ 
+#Creating Security Groups
+
+resource "aws_security_group" "allow_tls" {
+
+  name        = "allow_tls"
+
+  description = "Allow TLS inbound traffic and all outbound traffic"
+
+  vpc_id      = aws_vpc.main.id
+ 
+  tags = {
+
+    Name = "allow_tls"
+
+  }
+
+}
+ 
+resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
+
+  security_group_id = aws_security_group.allow_tls.id
+
+  #cidr_ipv4         = aws_vpc.main.cidr_block
+
+  cidr_ipv4         = "0.0.0.0/0"
+
+  #from_port         = 443
+
+  ip_protocol       = "-1"
+
+  #to_port           = 443
+
+}
+ 
+resource "aws_vpc_security_group_ingress_rule" "allows_RDP" {
+
+  security_group_id = aws_security_group.allow_tls.id  
+
+  #cidr_ipv4         = aws_vpc.main.cidr_block
+
+  cidr_ipv4         = "0.0.0.0/0"
+
+  from_port         = 3389
+
+  ip_protocol       = "tcp"
+
+  to_port           = 3389
+}
+ 
+resource "aws_security_group" "allow_all" {
+
+  name        = "allow_all"
+
+  description = "Allow TLS inbound traffic and all outbound traffic"
+  vpc_id      = aws_vpc.main.id
+ 
+  tags = {
+
+    Name = "allow_all"
+
+  }
+
+}
+
+
+## Application Load Balancer
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_all.id]
+  #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
+  #subnets            = [for subnet in aws_subnet.public : subnet.id]
+  subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.id]
+  #enable_deletion_protection = true
+
+#   access_logs {
+#     bucket  = aws_s3_bucket.lb_logs.id
+#     prefix  = "test-lb"
+#     enabled = true
+#   }
+
+  tags = {
+    Environment = "training"
+  }
+}
+
+
+resource "aws_internet_gateway" "igw_test1" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "tf-igw"
+  }
+}
+
+
+## ALB Target Group
+resource "aws_lb_target_group" "alb-example" {
+  name        = "tf-example-lb-alb-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+}
+
+resource "aws_lb_target_group_attachment" "test1" {
+  target_group_arn = aws_lb_target_group.alb-example.arn
+  target_id        = aws_instance.ec2Dev.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "test2" {
+  target_group_arn = aws_lb_target_group.alb-example.arn
+  target_id        = aws_instance.ec2Test.id
+  port             = 80
+}
+
+
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_lb.test.arn
+  port              = "80"
+  protocol          = "HTTP"
+  #ssl_policy        = "ELBSecurityPolicy-2016-08"
+  #certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.alb-example.arn
+  }
+}
+
+resource "aws_eip" "nat_eip" {
+  instance = aws_instance.ec2Dev.id
+  domain   = "vpc"
+}
+
+# Create the NAT Gateway
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.DevSubnetPublic.id
+  #vpc_id        = aws_vpc.main.id
+  tags = {
+    Name = "my-nat-gateway"
+  }
+}
