@@ -260,7 +260,7 @@ resource "aws_lb_listener" "front_end" {
 
 resource "aws_eip" "nat_eip" {
   instance = aws_instance.ec2Dev.id
-  domain   = "vpc"
+  #domain   = "vpc"
 }
 
 # Create the NAT Gateway
