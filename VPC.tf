@@ -11,7 +11,7 @@ resource "aws_vpc" "test_vpc" {
 #To create subnet
 resource "aws_subnet" "q1_public_subnet" {
   vpc_id     = aws_vpc.test_vpc.id
-  cidr_block = "10.0.0.0/30"
+  cidr_block = "10.0.0.0/24"
   availability_zone = "us-east-1a"
   tags = {
     Name = "q1_public_subnet"
@@ -20,7 +20,7 @@ resource "aws_subnet" "q1_public_subnet" {
 
 resource "aws_subnet" "q1_private_subnet" {
   vpc_id     = aws_vpc.test_vpc.id
-  cidr_block = "10.0.1.0/30"
+  cidr_block = "10.0.1.0/24"
    availability_zone = "us-east-1a"
   tags = {
     Name = "q1_private_subnet"
@@ -29,7 +29,7 @@ resource "aws_subnet" "q1_private_subnet" {
 
 resource "aws_subnet" "q2_public_subnet" {
   vpc_id     = aws_vpc.test_vpc.id
-  cidr_block = "10.0.2.0/30"
+  cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
   tags = {
     Name = "q2_public_subnet"
@@ -38,7 +38,7 @@ resource "aws_subnet" "q2_public_subnet" {
 
 resource "aws_subnet" "q2_private_subnet" {
   vpc_id     = aws_vpc.test_vpc.id
-  cidr_block = "10.0.3.0/30"
+  cidr_block = "10.0.3.0/24"
    availability_zone = "us-east-1b"
   tags = {
     Name = "q2_private_subnet"
