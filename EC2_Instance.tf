@@ -32,7 +32,7 @@ resource "aws_lb" "test_lb" {
   security_groups    = [aws_security_group.allow_all.id]
   #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
   #subnets            = [for subnet in aws_subnet.public : subnet.id]
-  subnets            = [aws_subnet.DevSubnetPublic.id,aws_subnet.TestSubnetPublic.id]
+  subnets            = [aws_subnet.q1_public_subnet.id,aws_subnet.q2_public_subnet.id]
   #enable_deletion_protection = true
 
 #   access_logs {
