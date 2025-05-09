@@ -114,10 +114,11 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_route_table" "qa1_public_route" {
   vpc_id = aws_vpc.q1_vpc.id
  
-  # route {
-  #   cidr_block = aws_vpc.test_vpc.cidr_block
-  #   network_interface_id = aws_network_interface.test_public.id
-  # }
+  route {
+    cidr_block = aws_subnet.q1_public_web.cidr_block
+    #network_interface_id = aws_network_interface.test_public.id
+    gateway_id = aws_internet_gateway.q1_igw.id
+  }
 }
  
 # associating route table with Public subnet 1
@@ -133,5 +134,5 @@ resource "aws_route_table_association" "qa1_route_table_association" {
  
 # # creating network interface for subnet
 #  resource "aws_network_interface" "test_public" {
-#    subnet_id = aws_subnet.test_public_subnet1.id
+#    subnet_id = aws_subnet.q1_public_web.id
 #  }
