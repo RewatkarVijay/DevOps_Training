@@ -102,7 +102,7 @@ resource "aws_eip" "nat_eip" {
 # To create NAT Gateway
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.q1_public_subnet.id
+  subnet_id     = aws_subnet.q1_public_web.id
   #vpc_id        = aws_vpc.main.id
   tags = {
     Name = "qa1-nat-gateway"
