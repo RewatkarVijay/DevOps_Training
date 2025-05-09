@@ -119,6 +119,7 @@ resource "aws_route_table" "qa1_public_route" {
     #network_interface_id = aws_network_interface.test_public.id
     gateway_id = aws_internet_gateway.q1_igw.id
   }
+  
 }
  
 # associating route table with Public subnet 1
@@ -136,3 +137,25 @@ resource "aws_route_table_association" "qa1_route_table_association" {
 #  resource "aws_network_interface" "test_public" {
 #    subnet_id = aws_subnet.q1_public_web.id
 #  }
+
+
+#############
+resource "aws_route_table" "qa1_private_route" {
+  vpc_id = aws_vpc.q1_vpc.id
+ 
+  route {
+    cidr_block = "0.0.0.0/0"
+    #network_interface_id = aws_network_interface.test_public.id
+    nat_gateway_id = aws_nat_gateway.nat.id
+  }
+}
+
+resource "aws_route_table_association" "qa1_route_table_association_private_web" {
+  subnet_id      = aws_subnet.q1_private_web.id
+  route_table_id = aws_route_table.qa1_private_route.id
+}
+
+resource "aws_route_table_association" "qa1_route_table_association_private_app" {
+  subnet_id      = aws_subnet.q1_private_app.id
+  route_table_id = aws_route_table.qa1_private_route.id
+}
