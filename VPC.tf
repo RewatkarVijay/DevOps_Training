@@ -1,61 +1,58 @@
 #To create VPC
-resource "aws_vpc" "test_vpc" {
+resource "aws_vpc" "q1_vpc" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
   tags = {
-    Name = "test_vpc"
+    Name = "Q1_VPC"
   }
 }
 
 #To create subnet
-resource "aws_subnet" "q1_public_subnet" {
-  vpc_id     = aws_vpc.test_vpc.id
+resource "aws_subnet" "q1_public_web" {
+  vpc_id     = aws_vpc.q1_vpc.id
   cidr_block = "10.0.0.0/24"
   availability_zone = "us-east-1a"
   tags = {
-    Name = "q1_public_subnet"
+    Name = "q1_public_web"
   }
 }
 
-resource "aws_subnet" "q1_private_subnet" {
-  vpc_id     = aws_vpc.test_vpc.id
+resource "aws_subnet" "q1_private_web" {
+  vpc_id     = aws_vpc.q1_vpc.id
   cidr_block = "10.0.1.0/24"
    availability_zone = "us-east-1a"
   tags = {
-    Name = "q1_private_subnet"
+    Name = "q1_private_web"
   }
 }
 
-resource "aws_subnet" "q2_public_subnet" {
-  vpc_id     = aws_vpc.test_vpc.id
+resource "aws_subnet" "q1_public_app" {
+  vpc_id     = aws_vpc.q1_vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
   tags = {
-    Name = "q2_public_subnet"
+    Name = "q1_public_app"
   }
 }
 
-resource "aws_subnet" "q2_private_subnet" {
-  vpc_id     = aws_vpc.test_vpc.id
+resource "aws_subnet" "q1_private_app" {
+  vpc_id     = aws_vpc.q1_vpc.id
   cidr_block = "10.0.3.0/24"
    availability_zone = "us-east-1b"
   tags = {
-    Name = "q2_private_subnet"
+    Name = "q1_private_app"
   }
 }
-
 
 #To create security groups
 resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.test_vpc.id
+  vpc_id      = aws_vpc.q1_vpc.id
  
   tags = {
-
-    Name = "allow_tls"
-
+    Name = "allow_tls"  
   }
 }
 
@@ -80,37 +77,61 @@ resource "aws_vpc_security_group_ingress_rule" "allows_RDP" {
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow TLS inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.test_vpc.id
+  vpc_id      = aws_vpc.q1_vpc.id
  
    tags = {
-
     Name = "allow_all"
-
   }
 }
 
-resource "aws_internet_gateway" "igw_test1" {
-  vpc_id = aws_vpc.test_vpc.id
+resource "aws_internet_gateway" "q1_igw" {
+  vpc_id = aws_vpc.q1_vpc.id
 
   tags = {
-    Name = "tf-igw"
+    Name = "q1-igw"
   }
 }
 
-# Create Elastic IP resource.
+# To create Elastic IP resource.
 resource "aws_eip" "nat_eip" {
   #instance = aws_instance.web-01.id
   #domain   = "vpc"
   network_border_group = "us-east-1"
 }
- 
-# Create NAT Gateway
+
+# To create NAT Gateway
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.q1_public_subnet.id
+  subnet_id     = aws_subnet.q1_public_web.id
   #vpc_id        = aws_vpc.main.id
   tags = {
     Name = "qa1-nat-gateway"
   }
 }
+
+
+# Creating Route tables for Public Subnets
+resource "aws_route_table" "qa1_public_route" {
+  vpc_id = aws_vpc.q1_vpc.id
  
+  # route {
+  #   cidr_block = aws_vpc.test_vpc.cidr_block
+  #   network_interface_id = aws_network_interface.test_public.id
+  # }
+}
+ 
+# associating route table with Public subnet 1
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.q1_public_web.id
+  route_table_id = aws_route_table.qa1_public_route.id
+}
+ 
+resource "aws_route_table_association" "qa1_route_table_association" {
+  subnet_id      = aws_subnet.q1_public_app.id
+  route_table_id = aws_route_table.qa1_public_route.id
+}
+ 
+# # creating network interface for subnet
+#  resource "aws_network_interface" "test_public" {
+#    subnet_id = aws_subnet.test_public_subnet1.id
+#  }
