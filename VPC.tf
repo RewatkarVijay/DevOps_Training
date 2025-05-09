@@ -115,7 +115,7 @@ resource "aws_route_table" "qa1_public_route" {
   vpc_id = aws_vpc.q1_vpc.id
  
   route {
-    cidr_block = aws_vpc.q1_vpc.cidr_block
+    cidr_block = "0.0.0.0/0"
     #network_interface_id = aws_network_interface.test_public.id
     gateway_id = aws_internet_gateway.q1_igw.id
   }
