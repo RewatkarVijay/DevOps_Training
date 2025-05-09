@@ -55,20 +55,20 @@ resource "aws_lb_target_group" "qa1_tg_alb" {
 }
 
 resource "aws_lb_target_group_attachment" "lb_tg_attach_web-01" {
-  target_group_arn = aws_lb_target_group.alb-example.arn
-  target_id        = aws_instance.web-01.id
+  target_group_arn = aws_lb_target_group.qa1_tg_alb.arn
+  target_id        = aws_instance.q1_web-01.id
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "lb_tg_attach_web-02" {
-  target_group_arn = aws_lb_target_group.alb-example.arn
-  target_id        = aws_instance.web-02.id
+  target_group_arn = aws_lb_target_group.qa1_tg_alb.arn
+  target_id        = aws_instance.q1_web-02.id
   port             = 80
 }
 
 
 resource "aws_lb_listener" "front_end" {
-  load_balancer_arn = aws_lb.test_lb.arn
+  load_balancer_arn = aws_lb.qa1_alb.arn
   port              = "80"
   protocol          = "HTTP"
   #ssl_policy        = "ELBSecurityPolicy-2016-08"
