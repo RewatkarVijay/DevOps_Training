@@ -8,7 +8,8 @@ resource "aws_instance" "q1_web-01" {
 
  tags = {
    Name = "Q1_Web-01"
- } 
+ }
+ 
 }
 
 ## To create EC2 instace
@@ -53,16 +54,13 @@ resource "aws_lb_target_group" "qa1_tg_alb" {
   protocol    = "HTTP"
   vpc_id      = aws_vpc.q1_vpc.id
 
-  target_group_health {
-    dns_failover {
-      minimum_healthy_targets_count      = "1"
-      minimum_healthy_targets_percentage = "off"
-    }
-
-    unhealthy_state_routing {
-      minimum_healthy_targets_count      = "1"
-      minimum_healthy_targets_percentage = "off"
-    }
+  health_check {
+    path                = "/health"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    matcher             = "200-299"
   }
 }
 
