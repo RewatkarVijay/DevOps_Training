@@ -74,6 +74,16 @@ resource "aws_vpc_security_group_ingress_rule" "allows_RDP" {
   to_port           = 3389
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allows_alp" {
+  security_group_id = aws_security_group.allow_tls.id  
+  #cidr_ipv4         = aws_vpc.main.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow TLS inbound traffic and all outbound traffic"
