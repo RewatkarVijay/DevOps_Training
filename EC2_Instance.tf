@@ -8,7 +8,7 @@ resource "aws_instance" "q1_web-01" {
 
  tags = {
    Name = "Q1_Web-01"
- }
+ } 
 }
 
 ## To create EC2 instace
@@ -52,6 +52,18 @@ resource "aws_lb_target_group" "qa1_tg_alb" {
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.q1_vpc.id
+
+  target_group_health {
+    dns_failover {
+      minimum_healthy_targets_count      = "1"
+      minimum_healthy_targets_percentage = "off"
+    }
+
+    unhealthy_state_routing {
+      minimum_healthy_targets_count      = "1"
+      minimum_healthy_targets_percentage = "off"
+    }
+  }
 }
 
 resource "aws_lb_target_group_attachment" "lb_tg_attach_web-01" {
