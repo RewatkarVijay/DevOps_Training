@@ -127,7 +127,7 @@ resource "aws_route_table_association" "a" {
 }
  
 resource "aws_route_table_association" "qa1_route_table_association" {
-  subnet_id      = aws_subnet.test_public_subnet2
+  subnet_id      = aws_subnet.q1_public_app.id
   route_table_id = aws_route_table.qa1_public_route.id
 }
  

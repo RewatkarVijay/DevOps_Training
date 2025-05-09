@@ -2,7 +2,7 @@
 resource "aws_instance" "q1_web-01" {
  ami           = "ami-05f08ad7b78afd8cd" #ami-0af88851684f35a8c
  instance_type = "t2.micro"
- subnet_id = aws_subnet.q1_private_subnet.id
+ subnet_id = aws_subnet.q1_private_web.id
  key_name = "EC2PRODKeyPair"
  vpc_security_group_ids = [aws_security_group.allow_tls.id]
 
@@ -15,7 +15,7 @@ resource "aws_instance" "q1_web-01" {
 resource "aws_instance" "q1_web-02" {
  ami           = "ami-05f08ad7b78afd8cd" #ami-0af88851684f35a8c
  instance_type = "t2.micro"
- subnet_id = aws_subnet.q2_private_subnet.id
+ subnet_id = aws_subnet.q1_private_app.id
   key_name = "EC2PRODKeyPair"
   vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
 
@@ -32,7 +32,7 @@ resource "aws_lb" "qa1_alb" {
   security_groups    = [aws_security_group.allow_all.id]
   #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
   #subnets            = [for subnet in aws_subnet.public : subnet.id]
-  subnets            = [aws_subnet.q1_public_subnet.id,aws_subnet.q2_public_subnet.id]
+  subnets            = [aws_subnet.q1_private_web.id,aws_subnet.q1_private_app.id]
   #enable_deletion_protection = true
 
 #   access_logs {
@@ -76,6 +76,6 @@ resource "aws_lb_listener" "front_end" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb-example.arn
+    target_group_arn = aws_lb_target_group.qa1_tg_alb.arn
   }
 }

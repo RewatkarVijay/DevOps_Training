@@ -72,7 +72,7 @@ resource "aws_iam_policy" "user" {
 # }
 
 resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
-    user = aws_iam_user.vishal-t.name
+    user = aws_iam_user.q1_user.name
     policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess" #arn:aws:iam::aws:policy/AmazonEC2FullAccess 
     #arn:aws:iam::aws:policy/AIOpsOperatorAccess
 }
@@ -80,7 +80,7 @@ resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
 
 resource "aws_iam_group_policy" "qa1_developer_policy" {
   name  = "qa1_developer_policy"
-  group = aws_iam_group.gp_developers.name
+  group = aws_iam_group.developer.name
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
