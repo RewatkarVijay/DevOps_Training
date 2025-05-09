@@ -1,4 +1,4 @@
-resource "aws_iam_policy" "p_developer" {
+resource "aws_iam_policy" "developer" {
   name        = "DT_S3_Full_Access"
   #description = "A Demo policy"
   policy      = jsonencode(
@@ -18,7 +18,7 @@ resource "aws_iam_policy" "p_developer" {
 )
 }
 
-resource "aws_iam_policy" "p_user" {
+resource "aws_iam_policy" "user" {
   name        = "test-policy"
   description = "A test policy"
   policy      = jsonencode({
@@ -77,23 +77,9 @@ resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
     #arn:aws:iam::aws:policy/AIOpsOperatorAccess
 }
 
-resource "aws_iam_group_policy_attachment" "gpa_developer" {
-  group      = aws_iam_group.gp_developers.name
-  policy_arn = aws_iam_policy.p_developer.arn
-}
 
-resource "aws_iam_group_policy_attachment" "gpa_users" {
-  group      = aws_iam_group.gp_users.name
-  policy_arn = aws_iam_policy.p_user.arn
-}
-
-resource "aws_iam_group_policy_attachment" "gpa_users1" {
-  group      = aws_iam_group.gp_users.name
-  policy_arn = "arn:aws:iam::aws:policy/AIOpsOperatorAccess"
-}
-
-resource "aws_iam_group_policy" "my_developer_policy111" {
-  name  = "my_developer_policy111"
+resource "aws_iam_group_policy" "qa1_developer_policy" {
+  name  = "qa1_developer_policy"
   group = aws_iam_group.gp_developers.name
 
   # Terraform's "jsonencode" function converts a
@@ -110,4 +96,19 @@ resource "aws_iam_group_policy" "my_developer_policy111" {
       },
     ]
   })
+}
+
+resource "aws_iam_group_policy_attachment" "qa1_developer" {
+  group      = aws_iam_group.gp_developers.name
+  policy_arn = aws_iam_policy.p_developer.arn
+}
+
+resource "aws_iam_group_policy_attachment" "qa1_user" {
+  group      = aws_iam_group.gp_users.name
+  policy_arn = aws_iam_policy.p_user.arn
+}
+
+resource "aws_iam_group_policy_attachment" "qa1_user_AIOpsOperatorAccess" {
+  group      = aws_iam_group.gp_users.name
+  policy_arn = "arn:aws:iam::aws:policy/AIOpsOperatorAccess"
 }
