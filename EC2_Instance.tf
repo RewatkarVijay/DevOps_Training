@@ -51,7 +51,7 @@ resource "aws_lb_target_group" "qa1_tg_alb" {
   name        = "tf-example-lb-alb-tg"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.test_vpc.id
+  vpc_id      = aws_vpc.q1_vpc.id
 }
 
 resource "aws_lb_target_group_attachment" "lb_tg_attach_web-01" {

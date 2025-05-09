@@ -99,16 +99,16 @@ resource "aws_iam_group_policy" "qa1_developer_policy" {
 }
 
 resource "aws_iam_group_policy_attachment" "qa1_developer" {
-  group      = aws_iam_group.gp_developers.name
-  policy_arn = aws_iam_policy.p_developer.arn
+  group      = aws_iam_group.developer.name
+  policy_arn = aws_iam_policy.developer.arn
 }
 
 resource "aws_iam_group_policy_attachment" "qa1_user" {
-  group      = aws_iam_group.gp_users.name
-  policy_arn = aws_iam_policy.p_user.arn
+  group      = aws_iam_group.user.name
+  policy_arn = aws_iam_policy.user.arn
 }
 
 resource "aws_iam_group_policy_attachment" "qa1_user_AIOpsOperatorAccess" {
-  group      = aws_iam_group.gp_users.name
+  group      = aws_iam_group.user.name
   policy_arn = "arn:aws:iam::aws:policy/AIOpsOperatorAccess"
 }
