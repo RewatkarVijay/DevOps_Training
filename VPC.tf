@@ -75,7 +75,7 @@ resource "aws_vpc_security_group_ingress_rule" "allows_RDP" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allows_alp" {
-  security_group_id = aws_security_group.allow_tls.id  
+  security_group_id = aws_security_group.allow_all.id
   #cidr_ipv4         = aws_vpc.main.cidr_block
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -84,7 +84,7 @@ resource "aws_vpc_security_group_ingress_rule" "allows_alp" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "allows_alp2" {
-  security_group_id = aws_security_group.allow_tls.id  
+  security_group_id = aws_security_group.allow_all.id
   #cidr_ipv4         = aws_vpc.main.cidr_block
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
