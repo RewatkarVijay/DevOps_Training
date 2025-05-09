@@ -83,6 +83,14 @@ resource "aws_vpc_security_group_ingress_rule" "allows_alp" {
   to_port           = 80
 }
 
+resource "aws_vpc_security_group_egress_rule" "allows_alp2" {
+  security_group_id = aws_security_group.allow_tls.id  
+  #cidr_ipv4         = aws_vpc.main.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
 
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
