@@ -4,7 +4,7 @@ resource "aws_instance" "q1_web-01" {
  instance_type = "t2.micro"
  subnet_id = aws_subnet.q1_private_web.id
  key_name = "EC2PRODKeyPair"
- vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
+ vpc_security_group_ids = [aws_security_group.allow_all.id]
 
  tags = {
    Name = "Q1_Web-01"
