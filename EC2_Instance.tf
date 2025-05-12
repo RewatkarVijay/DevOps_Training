@@ -61,14 +61,14 @@ resource "aws_lb_target_group" "qa1_tg_alb" {
   protocol    = "HTTP"
   vpc_id      = aws_vpc.q1_vpc.id
 
-  health_check {
-    path                = "/health"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    matcher             = "200-299"
-  }
+  # health_check {
+  #   path                = "/health"
+  #   interval            = 30
+  #   timeout             = 5
+  #   healthy_threshold   = 3
+  #   unhealthy_threshold = 3
+  #   matcher             = "200-299"
+  # }
 }
 
 resource "aws_lb_target_group_attachment" "lb_tg_attach_web-01" {
