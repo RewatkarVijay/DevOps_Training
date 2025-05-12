@@ -40,7 +40,7 @@ resource "aws_lb" "qa1_alb" {
   security_groups    = [aws_security_group.allow_all.id,aws_security_group.allow_tls.id]
   #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
   #subnets            = [for subnet in aws_subnet.public : subnet.id]
-  subnets            = [aws_subnet.q1_private_web.id,aws_subnet.q1_private_app.id]
+  subnets            = [aws_subnet.q1_public_web.id,aws_subnet.q1_public_app.id]
   #enable_deletion_protection = true
 
 #   access_logs {
