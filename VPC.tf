@@ -179,7 +179,7 @@ resource "aws_route_table_association" "qa1_route_table_association_private_app"
 }
 
 
-resource "aws_vpc_security_group_igress_rule" "allow_tls_ssh" {
+resource "aws_vpc_security_group_ingress_rule" "allow_tls_ssh" {
   security_group_id = aws_security_group.allow_tls.id  
   #cidr_ipv4         = aws_vpc.main.cidr_block
   cidr_ipv4         = "0.0.0.0/0"
