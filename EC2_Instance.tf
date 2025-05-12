@@ -4,7 +4,7 @@ resource "aws_instance" "q1_web-01" {
  instance_type = "t2.micro"
  subnet_id = aws_subnet.q1_private_web.id
  key_name = "EC2PRODKeyPair"
- vpc_security_group_ids = [aws_security_group.allow_tls.id]
+ vpc_security_group_ids = [aws_security_group.allow_tls.id,aws_security_group.allow_all.id]
 
  tags = {
    Name = "Q1_Web-01"
@@ -29,7 +29,7 @@ resource "aws_lb" "qa1_alb" {
   name               = "test-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_all.id]
+  security_groups    = [aws_security_group.allow_all.id,aws_security_group.allow_tls.id]
   #subnets            = [for subnet in aws_subnet.DevSubnetPublic : subnet.id]
   #subnets            = [for subnet in aws_subnet.public : subnet.id]
   subnets            = [aws_subnet.q1_private_web.id,aws_subnet.q1_private_app.id]
