@@ -1,3 +1,6 @@
+## To create policies
+
+
 resource "aws_iam_policy" "developer" {
   name        = "DT_S3_Full_Access"
   #description = "A Demo policy"
@@ -71,6 +74,7 @@ resource "aws_iam_policy" "user" {
 #     policy_arn = aws_iam_policy.policy.arn
 # }
 
+## To attach policy to IAM user
 resource "aws_iam_user_policy_attachment" "user_policy_attachment1" {
     user = aws_iam_user.q1_user.name
     policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess" #arn:aws:iam::aws:policy/AmazonEC2FullAccess 

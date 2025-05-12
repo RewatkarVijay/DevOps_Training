@@ -9,7 +9,6 @@ resource "aws_instance" "q1_web-01" {
  tags = {
    Name = "Q1_Web-01"
  }
- 
 }
 
 ## To create EC2 instace
@@ -75,7 +74,6 @@ resource "aws_lb_target_group_attachment" "lb_tg_attach_web-02" {
   target_id        = aws_instance.q1_web-02.id
   port             = 80
 }
-
 
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.qa1_alb.arn

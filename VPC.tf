@@ -127,8 +127,7 @@ resource "aws_nat_gateway" "nat" {
   }
 }
 
-
-# Creating Route tables for Public Subnets
+## Creating Route tables for Public Subnets
 resource "aws_route_table" "qa1_public_route" {
   vpc_id = aws_vpc.q1_vpc.id
  
@@ -140,7 +139,7 @@ resource "aws_route_table" "qa1_public_route" {
   
 }
  
-# associating route table with Public subnet 1
+## associating route table with Public subnet 1
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.q1_public_web.id
   route_table_id = aws_route_table.qa1_public_route.id
@@ -157,7 +156,7 @@ resource "aws_route_table_association" "qa1_route_table_association" {
 #  }
 
 
-#############
+## Creating Route tables for Private Subnets
 resource "aws_route_table" "qa1_private_route" {
   vpc_id = aws_vpc.q1_vpc.id
  
@@ -168,6 +167,7 @@ resource "aws_route_table" "qa1_private_route" {
   }
 }
 
+## associating route table with Private subnet 1
 resource "aws_route_table_association" "qa1_route_table_association_private_web" {
   subnet_id      = aws_subnet.q1_private_web.id
   route_table_id = aws_route_table.qa1_private_route.id
